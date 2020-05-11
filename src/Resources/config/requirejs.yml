@@ -20,3 +20,9 @@ config:
         pim/form/common/attributes/create-button:
             attribute_icons:
                 flagbit_catalog_table: table
+        akeneoreferenceentity/application/configuration/attribute:
+            flagbit_table:
+                icon: bundles/pimui/images/attribute/icon-multiselect.svg
+                denormalize: '@flagbittableattribute/reference-entity/attribute/table/table.ts'
+                reducer: '@flagbittableattribute/reference-entity/attribute/table/reducer.ts'
+                view: '@flagbittableattribute/reference-entity/attribute/table/view.tsx'

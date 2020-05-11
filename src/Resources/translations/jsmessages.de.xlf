@@ -86,6 +86,11 @@
                 <source>flagbit.table_attribute.simpleselect.value.label</source>
                 <target>Wert</target>
             </trans-unit>
+
+            <trans-unit id="pim_reference_entity_attribute_type_flagbit_table">
+                <source>pim_reference_entity.attribute.type.flagbit_table</source>
+                <target>Tabelle</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
