@@ -1,0 +1,38 @@
+on:
+  - "push"
+  - "pull_request"
+
+jobs:
+  build:
+    runs-on: "ubuntu-18.04"
+    strategy:
+      matrix:
+        php-versions: ['7.3']
+
+    steps:
+      - uses: "actions/checkout@v2.0.0"
+      - name: "Cache dependencies installed with composer"
+        uses: "actions/cache@v1.0.3"
+        with:
+          path: "~/.composer/cache"
+          key: "composer-${{ matrix.php-version }}-${{ hashFiles('composer.json') }}"
+          restore-keys: "composer-${{ matrix.php-version }}-"
+
+      - name: "Setup PHP Action"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-versions }}"
+          extensions: "intl, xdebug, imagick, apcu"
+
+      - name: "Composer install"
+        run: "composer install --ansi --prefer-dist --no-interaction --optimize-autoloader --no-suggest --no-progress"
+      - name: "Temporary solution of dependencies"
+        run: "composer require --dev symfony/debug-bundle:^4.0 symfony/web-server-bundle:^4.0 symfony/web-profiler-bundle:^4.0"
+      - name: "Linting"
+        run: "vendor/bin/phplint ./src"
+      - name: "Code Sniffer"
+        run: "vendor/bin/phpcs -d memory_limit=-1 --standard=PSR2 --extensions=php ./src"
+      - name: "PHPSpec"
+        run: "vendor/bin/phpspec run"
+      - name: "Integration tests"
+        run: "vendor/bin/phpunit"
